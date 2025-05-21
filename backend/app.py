@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 app = Flask(__name__)
 app.config.from_object('config')
 CORS(app)
+CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 jwt = JWTManager(app)
 
 # Registra tus blueprints
