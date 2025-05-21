@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token
 from managers.auth_manager import AuthManager
 
 auth_bp = Blueprint("auth", __name__)
@@ -8,12 +9,10 @@ def register():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
-
     if not username or not password:
         return jsonify({"message": "Username and password are required"}), 400
-
     try:
-        AuthManager.register_user(username, password)
+        AuthManager.register(username, password)
         return jsonify({"message": "User registered successfully"}), 201
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
@@ -23,12 +22,11 @@ def login():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
-
     if not username or not password:
         return jsonify({"message": "Username and password are required"}), 400
-
     try:
-        token = AuthManager.login_user(username, password)
-        return jsonify({"token": token}), 200
+        user = AuthManager.verify_credentials(username, password)
+        access_token = create_access_token(identity=user.username)
+        return jsonify({"token": access_token}), 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 401
