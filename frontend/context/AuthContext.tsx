@@ -52,7 +52,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // El token se guardará como httpOnly en el servidor,
     // pero guardamos un indicador en el cliente
     Cookies.set('isLoggedIn', 'true', { path: '/' });
-    Cookies.set('token', token, { path: '/' });
     router.push('/tasks');
   };
   
