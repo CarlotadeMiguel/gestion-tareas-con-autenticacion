@@ -8,7 +8,7 @@ task_bp = Blueprint("tasks", __name__)
 def get_tasks():
     username = get_jwt_identity()
     tasks = TaskManager.get_tasks(username)
-    tasks_data = [vars(task) for task in tasks]  # Convierte objetos a diccionario
+    tasks_data = [vars(task) for task in tasks]
     return jsonify(tasks_data), 200
 
 @task_bp.route("/api/tasks", methods=["POST"])
@@ -23,7 +23,7 @@ def create_task():
 
     username = get_jwt_identity()
     try:
-        new_task = TaskManager.add_task(title, description, username)
+        new_task = TaskManager.add_task(username, title, description)
         return jsonify(vars(new_task)), 201
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
