@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/context/AuthContext';
 import Alert from '@/components/ui/Alert';
+import Link from 'next/link';
 
 type FormData = {
   username: string;
@@ -13,13 +14,13 @@ export default function LoginForm() {
   const { login } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  
+
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     setError('');
-    
+
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -28,13 +29,13 @@ export default function LoginForm() {
         },
         body: JSON.stringify(data),
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(result.error || 'Error al iniciar sesión');
       }
-      
+
       // Notificar al contexto de auth
       login(result.token);
     } catch (err: any) {
@@ -43,14 +44,14 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="w-full max-w-md mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Iniciar Sesión</h2>
-        
+
         {error && <Alert type="error" message={error} />}
-        
+
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" htmlFor="username">
             Usuario
@@ -63,7 +64,7 @@ export default function LoginForm() {
           />
           {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
         </div>
-        
+
         <div className="mb-6">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" htmlFor="password">
             Contraseña
@@ -76,7 +77,7 @@ export default function LoginForm() {
           />
           {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
         </div>
-        
+
         <div className="flex items-center justify-between">
           <button
             type="submit"
@@ -85,6 +86,12 @@ export default function LoginForm() {
           >
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
+          <Link
+              href="/register"
+              className="text-blue-600 hover:text-blue-800 font-medium underline transition"
+            >
+              Regístrate aquí
+            </Link>
         </div>
       </form>
     </div>
