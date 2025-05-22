@@ -13,8 +13,7 @@ def register():
         return jsonify({"message": "Username and password are required"}), 400
     try:
         AuthManager.register(username, password)
-        user = AuthManager.verify_credentials(username, password)
-        access_token = create_access_token(identity=user.username)
+        access_token = create_access_token(identity=username)
         return jsonify({"token": access_token}), 201
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
