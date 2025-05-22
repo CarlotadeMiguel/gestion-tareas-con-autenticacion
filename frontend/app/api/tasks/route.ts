@@ -10,7 +10,6 @@ export async function GET() {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
       cache: 'no-store',
-      credentials: 'include', // Para incluir cookies
     });
 
     const data = await response.json();
@@ -19,7 +18,7 @@ export async function GET() {
       return NextResponse.json({ error: data.message }, { status: response.status });
     }
 
-    return NextResponse.json({ data });
+    return NextResponse.json( data );
   } catch (error) {
     console.error('Error en login:', error);
     return NextResponse.json({ error: 'Error al procesar la solicitud' }, { status: 500 });
