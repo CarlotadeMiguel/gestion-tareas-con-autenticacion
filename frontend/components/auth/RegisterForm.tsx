@@ -2,14 +2,15 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import Alert from '../ui/Alert';
+import { useAuth } from '@/context/AuthContext';
 
 export default function RegisterForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const { login } = useAuth();
+  
   const onSubmit = async (data: any) => {
-    console.log('RegisterForm:', data);
     setError('');
     setSuccess('');
     const res = await fetch('/api/register', {
@@ -19,6 +20,7 @@ export default function RegisterForm() {
     });
     const result = await res.json();
     if (res.ok) {
+      login(result.token);
       setSuccess('Usuario registrado correctamente');
     } else {
       setError(result.message || 'Error al registrar');
