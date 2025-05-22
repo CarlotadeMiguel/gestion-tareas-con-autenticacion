@@ -5,7 +5,7 @@ import TaskForm from '@/components/tasks/TaskForm';
 import Navbar from '@/components/ui/Navbar';
 
 export default async function TasksPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('token');
 
   if (!token) {
