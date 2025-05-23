@@ -1,9 +1,15 @@
 'use client';
-import { useAuth } from '@/context/AuthContext';
+
 import ThemeToggle from './ThemeToggle';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-  const { logout, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const logout = async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    router.push('/login');
+  };
 
   return (
     <nav className="bg-gray-800 dark:bg-gray-900 p-4 flex justify-between items-center">
