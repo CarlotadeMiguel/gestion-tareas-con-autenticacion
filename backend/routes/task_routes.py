@@ -60,6 +60,16 @@ def create_task():
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
 
+@task_bp.route("/api/tasks/<int:task_id>", methods=["DELETE"])
+@jwt_required()
+def delete_task(task_id):
+    username = get_jwt_identity()
+    try:
+        updated_task = TaskManager.delete_task(username, task_id)
+        return jsonify({"message": updated_task }), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+
 @task_bp.route("/api/tasks/<int:task_id>/status", methods=["PUT"])
 @jwt_required()
 def update_task_status(task_id):
