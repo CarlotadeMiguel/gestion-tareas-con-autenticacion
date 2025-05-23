@@ -6,7 +6,7 @@ export default function Navbar() {
   const { logout, isAuthenticated } = useAuth();
 
   return (
-    <nav className="bg-gray-800 p-4 flex justify-between items-center">
+    <nav className="bg-gray-800 dark:bg-gray-900 p-4 flex justify-between items-center">
       <ThemeToggle />
           <button
             onClick={logout}
