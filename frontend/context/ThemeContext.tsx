@@ -15,8 +15,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Comprobar preferencia del sistema o localStorage
     const storedPreference = localStorage.getItem('darkMode');
+    const storedPreferenceB = storedPreference === 'true' ? true : false;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkMode(storedPreference ? storedPreference === 'true' : prefersDark);
+    setIsDarkMode(storedPreference? storedPreferenceB : prefersDark );
   }, []);
 
   useEffect(() => {
