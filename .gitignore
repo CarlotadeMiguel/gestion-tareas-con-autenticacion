@@ -3,3 +3,4 @@ venv
 # Ignorar archivos de entorno
 .env
 __pycache__
+gestion.db
