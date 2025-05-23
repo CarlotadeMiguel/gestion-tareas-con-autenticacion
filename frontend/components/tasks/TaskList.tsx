@@ -6,7 +6,7 @@ import Alert from '@/components/ui/Alert';
 
 const fetcher = async (url) => {
   console.log('Fetching tasks from API...');
-  const res = await fetch('http://localhost:5000/api/tasks', {
+  const res = await fetch(url, {
     credentials: 'include', // Para incluir cookies
   });
   if (!res.ok) throw new Error('Error al cargar tareas');
