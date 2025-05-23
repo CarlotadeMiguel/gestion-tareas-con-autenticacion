@@ -3,3 +3,4 @@ Flask-CORS
 Flask-JWT-Extended
 Werkzeug
 python-dotenv
+flask-SQLAlchemy
