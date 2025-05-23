@@ -2,13 +2,13 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import Alert from '../ui/Alert';
-import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { login } = useAuth();
+  const router = useRouter();
   
   const onSubmit = async (data: any) => {
     setError('');
@@ -20,7 +20,7 @@ export default function RegisterForm() {
     });
     const result = await res.json();
     if (res.ok) {
-      login(result.token);
+      router.push('/tasks');
       setSuccess('Usuario registrado correctamente');
     } else {
       setError(result.message || 'Error al registrar');

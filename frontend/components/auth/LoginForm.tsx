@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '@/context/AuthContext';
 import Alert from '@/components/ui/Alert';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   username: string;
@@ -11,10 +11,10 @@ type FormData = {
 };
 
 export default function LoginForm() {
-  const { login } = useAuth();
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
@@ -35,9 +35,8 @@ export default function LoginForm() {
       if (!response.ok) {
         throw new Error(result.error || 'Error al iniciar sesión');
       }
-
-      // Notificar al contexto de auth
-      login(result.token);
+      
+      router.push('/tasks');
     } catch (err: any) {
       setError(err.message);
     } finally {
