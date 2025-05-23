@@ -19,17 +19,14 @@ export default function TaskForm() {
   const onSubmit = async (data: FormData) => {
     setError('');
     setSuccess('');
-    
-    // Crear objeto temporal con ID único
     const tempId = Date.now().toString();
     const optimisticTask = {
       id: tempId,
       ...data,
-      isOptimistic: true // Marcar como temporal
+      isOptimistic: true
     };
 
     try {
-      // Actualización optimista
       mutate('/api/tasks', (currentTasks: any[] = []) => [...currentTasks, optimisticTask], false);
 
       const res = await fetch('/api/tasks', {
@@ -45,21 +42,19 @@ export default function TaskForm() {
       }
 
       const realTask = await res.json();
-      
-      // Reemplazar tarea temporal con la real
-      mutate('/api/tasks', (currentTasks: any[] = []) => 
-        currentTasks.map(task => 
+
+      mutate('/api/tasks', (currentTasks: any[] = []) =>
+        currentTasks.map(task =>
           task.id === tempId ? { ...realTask, isOptimistic: undefined } : task
-        ), 
+        ),
         true
       );
 
       setSuccess('Tarea creada correctamente');
       reset();
     } catch (err: any) {
-      // Revertir cambios si hay error
-      mutate('/api/tasks', (currentTasks: any[] = []) => 
-        currentTasks.filter(task => task.id !== tempId), 
+      mutate('/api/tasks', (currentTasks: any[] = []) =>
+        currentTasks.filter(task => task.id !== tempId),
         true
       );
       setError(err.message || 'Error al conectar con el servidor');
@@ -75,7 +70,7 @@ export default function TaskForm() {
         <input
           {...register('title', { required: true })}
           placeholder="Título"
-          className="w-full bg-gray-50 p-2 rounded border mb-1"
+          className="w-full bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 p-2 rounded border border-gray-300 dark:border-gray-600 mb-1"
         />
         {errors.title && <span className="text-red-500 text-xs">El título es obligatorio</span>}
       </div>
@@ -83,11 +78,11 @@ export default function TaskForm() {
         <textarea
           {...register('description', { required: true })}
           placeholder="Descripción"
-          className="w-full bg-gray-50 p-2 rounded border mb-1"
+          className="w-full bg-gray-50 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 p-2 rounded border border-gray-300 dark:border-gray-600 mb-1"
         />
         {errors.description && <span className="text-red-500 text-xs">La descripción es obligatoria</span>}
       </div>
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+      <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded">
         Añadir tarea
       </button>
     </form>
