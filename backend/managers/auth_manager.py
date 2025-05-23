@@ -5,7 +5,6 @@ from extensions import db
 class AuthManager:
     @staticmethod
     def register(username, password):
-        with db.app.app_context():
         # Verificar si el usuario ya existe
             existing_user = User.query.filter_by(username=username).first()
             if existing_user:
